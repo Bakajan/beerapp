@@ -1,0 +1,229 @@
+html, body {
+  margin: 0;
+  overflow-x: hidden;
+  font-family: 'Open Sans', sans-serif;
+  font-family: "Lato", sans-serif;
+  background: #f1f1f1;
+  margin: 0;
+}
+
+/* Font */
+@font-face {
+  font-family: 'icomoon';
+  src:url('fonts/icomoon.eot');
+}
+@font-face {
+  font-family: 'icomoon';
+  src: url(data:application/x-font-woff;charset=utf-8;base64,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) format('woff'),
+     url(data:application/x-font-ttf;charset=utf-8;base64,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) format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+  font-family: 'icomoon';
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+/*
+Instead of a list of all class selectors,
+you can use the generic selector below, but it's slower:
+[class*="icon-"] {
+*/
+.icon-search {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+.icon-search:before {
+  content: "\e000";
+}
+/* End Font */
+
+* {
+    outline: none
+}
+
+#search-wrapper {
+    height: 42px;
+    background-color: #4C66A4;
+    border: 0;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    position: relative
+    }
+
+#search-container {
+    width: 75%;
+    margin: auto;
+    position: relative;
+    padding: 8px 0
+    }
+
+#search-bar {
+    padding: 2px 0 2px 8px;
+    border: 1px solid #384C7F;
+    height: 25px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    width: 75%;
+    margin: 0 auto;
+    display: block
+}
+#search-bar::-webkit-search-cancel-button{
+    position:relative;
+    right:20px;
+}
+
+#search-span {
+    position: absolute;
+    right: 13%;
+    top: 13px;
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+    color: #434343
+    }
+
+#search-btn {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-shadow: none;
+    border: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0)
+    }
+
+/*****  Cards  *****/
+#cards-container {
+  padding: 10px;
+}
+
+.card {
+  border: 3px outset lightgray;
+  background: cornsilk;
+  margin: 0 auto;
+  width:700px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.beer-top {
+  height: 125px;
+}
+
+.tried-marker {
+  display: inline-block;
+  vertical-align: top;
+	cursor: pointer;
+}
+
+.beer-name {
+  display: inline-block;
+  font-size: xx-large;
+}
+
+.beer-style {
+  display: inline-block;
+  font-size: xx-large;
+}
+
+.abv-container {
+  display: inline-block;
+}
+
+.beer-abv {
+  display: inline-block;
+  font-size: xx-large;
+}
+
+.abv {
+  display: inline-block;
+  font-size: xx-large;
+}
+
+.abv-sign {
+  display: inline-block;
+  font-size: xx-large;
+}
+
+.beer-icon {
+  width: 100px;
+  height:100px;
+  border: 1px solid black;
+  float:  left;
+}
+
+.beer-icon img {
+  width: 100%;
+}
+
+.beer-rating {
+  display: inline-block;
+}
+
+.star {
+  cursor: pointer;
+  display: inline-block;
+	font-size: x-large;
+}
+
+.big-star {
+  font-size: xx-large;
+}
+
+.selected-star {
+	color: gold;
+}
+
+.hovered-star {
+	color: gold;
+}
+
+.description-title {
+  font-size: x-large;
+}
+
+.impression-title {
+  margin-top: 10px;
+  font-size: x-large;
+}
+.beer-impression {
+	font-size: large;
+	background: cornsilk;
+	width: 100%;
+	resize: none;
+}
+
+.fix-bottom {
+	position: fixed;
+	bottom: 0;
+}
+
+@media screen and (max-width: 700px) {
+  .card {
+    width: 95%;
+  }
+}
+
