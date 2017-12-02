@@ -40,8 +40,8 @@
                 return false;
               });
 
-              $('#search-btn').submit(function (e) {
-                BeerController.view.addCard(BeerController.view.card, '1');
+              $('#search-btn').click(function (e) {
+                BeerController.getBeers();
               });
 
               $(document).on('click', '.tried-marker', function () {
@@ -60,9 +60,7 @@
               });
 
               $(document).on('keydown', '.beer-impression', function () {
-                var el = this;
-                el.style.cssText = 'height:auto; padding:0';
-                el.style.cssText = 'height:' + el.scrollHeight + 'px'
+                BeerController.view.updateImpression($(this));
               });
 
               $(document).bindDelay('keyup', '.beer-impression', function(e) {

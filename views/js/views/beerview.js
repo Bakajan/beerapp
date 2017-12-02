@@ -39,11 +39,10 @@ function BeerView (template) {
     },
     showBeers: function (beers, myBeers) {
       $(this.cardsContainer).html('');
-      
+
       for(var index in beers) {
         var id = beers[index].id;
         this.addCard(this.card, id);
-
 
         $(this.cards + '#' + id).find('.beer-name').html(beers[index].name);
 
@@ -63,20 +62,23 @@ function BeerView (template) {
         var desc = beers[index].description || beers[index].style.description || '';
         $(this.cards + '#' + id).find('.beer-desc').html(desc);
 
-        var that = this;
-        for(var a = 0; a != myBeers.length; a++) {
-          if(id === myBeers[a].beer_id) {
-            if(myBeers[a].tried)
-              $('#' + id).find('.select-asterisk').html('*');
+        this.updateMine(myBeers, id);
+      }
+    },
+    updateMine: function (myBeers, id) {
+      var that = this;
+      for(var a = 0; a != myBeers.length; a++) {
+        if(id === myBeers[a].beer_id) {
+          if(myBeers[a].tried)
+            $('#' + id).find('.select-asterisk').html('*');
             $('#' + id).find('.star').each( function (index) {
-              var next = index + 1;
-              if(next <= myBeers[a].rating) {
-                $(this).html(that.star.solid).addClass('selected-star');
-              }
-            });
+            var next = index + 1;
+            if(next <= myBeers[a].rating)
+              $(this).html(that.star.solid).addClass('selected-star');
+          });
 
-            $('#' + id).find('.beer-impression').val(myBeers[a].impression);
-          }
+          $('#' + id).find('.beer-impression').val(myBeers[a].impression);
+          this.updateImpression($('#' + id).find('.beer-impression'));
         }
       }
     },
@@ -119,6 +121,11 @@ function BeerView (template) {
         asterisk.html('');
        else
         asterisk.html('*');
+    },
+    updateImpression: function (el) {
+      $(el).css('height', 'auto');
+      $(el).css('padding', '0');
+      $(el).css('height', el[0].scrollHeight + 'px');
     }
   };
 

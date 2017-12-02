@@ -31,16 +31,19 @@ function beerController (template) {
     },
     getBeers: function () {
       var that = this;
-      this.models.Beers.find({action: 'beers', term: $('#search-bar').val()}, function (data) {
-        var beers = {};
-        if(data) {
-          var json = JSON.parse(data);
-          if(json.data)
-            beers = json.data;
-        }
-        if(beers) {
-          that.view.showBeers(beers, that.mine);
-        }
+      this.getMine( function (mine) {
+        that.mine = mine;
+        that.models.Beers.find({action: 'beers', term: $('#search-bar').val()}, function (data) {
+          var beers = {};
+          if(data) {
+            var json = JSON.parse(data);
+            if(json.data)
+              beers = json.data;
+          }
+          if(beers) {
+            that.view.showBeers(beers, that.mine);
+          }
+        });
       });
     },
     rateBeer: function (selectedStar, selectedCard) {
@@ -68,7 +71,6 @@ function beerController (template) {
     editImpression: function (selectedCard) {
       var beer_id = this.view.getBeerID(selectedCard);
       var impression = this.view.getImpression(selectedCard);
-      console.log(impression);
 
       this.models.Beers.edit({action: 'edit', beer: beer_id, field: 'impression', value: impression}, function (data) {
         console.log(data);

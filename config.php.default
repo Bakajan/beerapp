@@ -1,0 +1,14 @@
+<?php
+
+return [
+"apikey" => "",
+"baseurl" => "http://api.brewerydb.com/",
+"version" => "v2/",
+"username" => "",
+"password" => "",
+"dbname" => "",
+"server" => "",
+"root" => ""
+];
+
+?>
