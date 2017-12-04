@@ -97,9 +97,7 @@
             $connection = new Connecter();
             $result = [
                 'result' => 'Success',
-                'errors' => [],
-	            'field' => $field,
-	            'value' => $value
+                'errors' => []
             ];
 
         	if($this->count($beer)) { // if found one update beer //
@@ -137,6 +135,11 @@
 
 		        $connection->conn = null;
 		        $connection       = null;
+	        }
+
+	        if($results) {
+		        $result['date_submitted'] = date( "Y-m-d H:i:s" );
+		        $result['beer']           = $beer;
 	        }
 
 	        return json_encode($result);

@@ -12,11 +12,13 @@
           </div>
         </form>
 
+		{filters}
+
         <div id="cards-container"></div>
 
         <div id="footer" >
          <p>
-            <img src="http://s3.amazonaws.com/brewerydb/Powered-By-BreweryDB.png" style="width: 300px;">
+            <img src="http://s3.amazonaws.com/brewerydb/Powered-By-BreweryDB.png">
             This product uses the BreweryDB API but is not endorsed or certified by PintLabs
          </p>
         </div>
@@ -61,6 +63,10 @@
 
               $(document).on('keydown', '.beer-impression', function () {
                 BeerController.view.updateImpression($(this));
+              });
+
+              $(document).on('click', '.filter', function (e) {
+                BeerController.filterBeers(e);
               });
 
               $(document).bindDelay('keyup', '.beer-impression', function(e) {

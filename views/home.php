@@ -18,7 +18,7 @@
                 $process = preg_replace( $html['variable'], $html['template'], $template );
             }
             $process = preg_replace( "/\{header\}/", file_get_contents($this::DIR . '/' . "templates/header.php"), $process );
-
+	        $process = preg_replace( "/\{filters\}/", file_get_contents($this::DIR . '/' . "templates/filters.php"), $process );
             $process = preg_replace( "/\r|\n/", "", $process );
 
             echo $process;

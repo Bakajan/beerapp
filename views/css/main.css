@@ -65,14 +65,18 @@ you can use the generic selector below, but it's slower:
     -webkit-box-shadow: none;
     box-shadow: none;
     position: relative
-    }
+}
 
 #search-container {
     width: 75%;
     margin: auto;
     position: relative;
     padding: 8px 0
-    }
+}
+
+#search-form {
+	margin-bottom: 0px;
+}
 
 #search-bar {
     padding: 2px 0 2px 8px;
@@ -221,9 +225,177 @@ you can use the generic selector below, but it's slower:
 	bottom: 0;
 }
 
+#filters {
+	text-align: center;
+}
+.filter-btn {
+	padding: 10px;
+	background: lightblue; /* For browsers that do not support gradients */
+	background: -webkit-linear-gradient(lightblue, deepskyblue); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(lightblue, deepskyblue); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(lightblue, deepskyblue); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(lightblue, deepskyblue); /* Standard syntax */
+	border-top: dodgerblue 3px outset;
+	border-bottom: dodgerblue 3px outset;
+	display: inline-block;
+	height: 16px;
+	vertical-align: top;
+	margin-left: -4px;
+	cursor: pointer;
+}
+.filter-label {
+	position: relative;
+}
+.left-border {
+	border-left: dodgerblue 3px outset;
+	border-top-left-radius: 16px;
+	border-bottom-left-radius: 16px;
+	cursor: default;
+}
+.right-border {
+	border-right: dodgerblue 3px outset;
+	border-top-right-radius: 16px;
+	border-bottom-right-radius: 16px;
+	cursor: default;
+}
+
+.selected-filter {
+	background: lightblue; /* For browsers that do not support gradients */
+	background: -webkit-linear-gradient(deepskyblue, lightblue); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(deepskyblue, lightblue); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(deepskyblue, lightblue); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(deepskyblue, lightblue); /* Standard syntax */
+	border-top: dodgerblue 3px inset;
+	border-bottom: dodgerblue 3px inset;
+}
+
+/*Style for the first level menu bar*/
+ul#menu {
+	margin: auto;
+	margin-left: -4px;
+}
+
+ul#menu > li {
+	float:left;
+	list-style-type:none;
+	position:relative;
+}
+
+label {
+	position:relative;
+	display:block;
+	padding:0 18px 0 12px;
+	line-height:40px;
+	margin-top:-11px;
+	transition:background 0.3s;
+	cursor:pointer;
+}
+
+label:after {
+	content:"";
+	position:absolute;
+	display:block;
+	top:50%;
+	right:5px;
+	width:0;
+	height:0;
+	border-top:4px solid rgba(255,255,255,.5);
+	border-bottom:0 solid rgba(255,255,255,.5);
+	border-left:4px solid transparent;
+	border-right:4px solid transparent;
+	transition:border-bottom .1s, border-top .1s .1s;
+}
+
+label:hover,
+input:checked ~ label{background:rgba(0,0,0,.3);}
+
+input:checked ~ label:after{
+	border-top:0 solid rgba(255,255,255,.5);
+	border-bottom:4px solid rgba(255,255,255,.5);
+	transition:border-top .1s, border-bottom .1s .1s;
+}
+
+/*hide the inputs*/
+input{display:none}
+
+/*show the second levele menu of the selected voice*/
+input:checked ~ ul.submenu{
+	max-height:300px;
+	transition:max-height 0.5s ease-in;
+}
+
+/*style for the second level menu*/
+ul.submenu{
+	max-height:0;
+	padding:0;
+	overflow:hidden;
+	list-style-type:none;
+	background:#444;
+	box-shadow:0 0 1px rgba(0,0,0,.3);
+	transition:max-height 0.5s ease-out;
+	position:absolute;
+	min-width:100%;
+}
+
+ul.submenu li a{
+	display:block;
+	padding:12px;
+	color:#ddd;
+	text-decoration:none;
+	box-shadow:0 -1px rgba(0,0,0,.5) inset;
+	transition:background .3s;
+	white-space:nowrap;
+}
+
+ul.submenu li a:hover{
+	background:rgba(0,0,0,.3);
+}
+
+#footer img {
+	width: 300px;
+}
+
 @media screen and (max-width: 700px) {
   .card {
     width: 95%;
   }
+
+	html {
+		font-size: x-large;
+	}
+
+	#search-bar {
+		height: initial;
+		font-size: x-large;
+		width:100%;
+	}
+	#search-form {
+		height: initial;
+	}
+	#search-wrapper {
+		height: initial;
+	}
+	#search-span {
+		font-size: x-large;
+		right: 5%;
+	}
+	.filter-btn {
+		margin-left: -8px;
+	}
+	#search-bar::-webkit-search-cancel-button{
+		right:32px;
+	}
+	.filter-label {
+		bottom: 25%;
+	}
+	#footer {
+		font-size: small;
+	}
+	#footer img {
+		width: 150px;
+	}
+	ul#menu {
+		margin-left: -4px;
+	}
 }
 

@@ -62,25 +62,22 @@ function BeerView (template) {
         var desc = beers[index].description || beers[index].style.description || '';
         $(this.cards + '#' + id).find('.beer-desc').html(desc);
 
-        this.updateMine(myBeers, id);
+        this.updateMine(beers[index], id);
       }
     },
-    updateMine: function (myBeers, id) {
+    updateMine: function (beer, id) {
       var that = this;
-      for(var a = 0; a != myBeers.length; a++) {
-        if(id === myBeers[a].beer_id) {
-          if(myBeers[a].tried)
-            $('#' + id).find('.select-asterisk').html('*');
-            $('#' + id).find('.star').each( function (index) {
-            var next = index + 1;
-            if(next <= myBeers[a].rating)
-              $(this).html(that.star.solid).addClass('selected-star');
-          });
+      if(beer.tried)
+        $('#' + beer.id).find('.select-asterisk').html('*');
 
-          $('#' + id).find('.beer-impression').val(myBeers[a].impression);
-          this.updateImpression($('#' + id).find('.beer-impression'));
-        }
-      }
+      $('#' + beer.id).find('.star').each( function (index) {
+        var next = index + 1;
+        if(next <= beer.rating)
+          $(this).html(that.star.solid).addClass('selected-star');
+      });
+
+      $('#' + beer.id).find('.beer-impression').val(beer.impression);
+      this.updateImpression($('#' + beer.id).find('.beer-impression'));
     },
     alterRating: function (selectedStar, selectedCard, how) {
       var star = this.getSelectedStar(selectedStar);
@@ -122,10 +119,36 @@ function BeerView (template) {
        else
         asterisk.html('*');
     },
+    toggleFilter: function (filterBtn) {
+      if($(filterBtn.target).closest('.filter').hasClass('selected-filter')) {
+        $(filterBtn.target).closest('.filter').removeClass('selected-filter');
+      }
+      else {
+        $(filterBtn.target).closest('.filter').addClass('selected-filter');
+      }
+    },
+    getSelectedFilters: function () {
+      var selectedFilters = [];
+      $('.filter').each( function (filter) {
+        if($(this).hasClass('selected-filter')) {
+          selectedFilters.push($(this).find('[data-filter]').attr('data-filter'));
+        }
+      });
+
+      return selectedFilters;
+    },
     updateImpression: function (el) {
       $(el).css('height', 'auto');
       $(el).css('padding', '0');
       $(el).css('height', el[0].scrollHeight + 'px');
+    },
+    filterBeers: function (filteredBeers) {
+      $(this.cards).each( function () {
+        if(!filteredBeers.includes($(this).attr('id')))
+          $(this).hide();
+        else
+          $(this).show();
+      });
     }
   };
 
