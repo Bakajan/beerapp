@@ -96,6 +96,7 @@ function beerController (template) {
     editImpression: function (selectedCard) {
       var beer_id = this.view.getBeerID(selectedCard);
       var impression = this.view.getImpression(selectedCard);
+      var that = this;
 
       this.models.Beers.edit({action: 'edit', beer: beer_id, field: 'impression', value: impression}, function (data) {
         if(data)
