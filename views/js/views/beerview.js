@@ -149,6 +149,11 @@ function BeerView (template) {
         else
           $(this).show();
       });
+    },
+    hideList: function (e) {
+      if($(e.target).attr('id') !== 'check01' && $(e.target).tagName !== 'A') {
+        $('#check01').prop('checked', false);
+      }
     }
   };
 

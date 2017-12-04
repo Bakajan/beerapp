@@ -32,6 +32,10 @@
             var timeout;
 
             $(document).ready(function() {
+              $(document).click( function (e) {
+               BeerController.view.hideList(e);
+              });
+
               $('#search-form').submit(function (e) {
                 e.preventDefault();
                 e.stopPropagation();
