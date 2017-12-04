@@ -34,7 +34,7 @@ function beerController (template) {
           }
         }
       }
-    }
+    },
     getMine: function (callback) {
       this.models.Beers.fetch(null, function (data) {
         callback(data);
