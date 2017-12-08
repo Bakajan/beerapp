@@ -9,6 +9,9 @@ function BeerView (template) {
       solid: '&#9733;',
       empty: '&#9734;'
     },
+    impression: '.beer-impression',
+    triedMarker: '.select-asterisk',
+    clearBtn: '.clear-btn',
     footer: {
       selector: '#footer',
       toggleFixed: function (toggle) {
@@ -97,10 +100,22 @@ function BeerView (template) {
     },
     clearStars: function () {
       var that = this;
+
       $('.star').each( function () {
-        if(!$(this).hasClass('selected-star'))
+        if($(this).hasClass('selected-star'))
+          $(this).html(that.star.solid);
+        else
           $(this).html(that.star.empty);
         $(this).removeClass('hovered-star');
+      });
+    },
+    emptyStars: function () {
+      var that = this;
+
+      $('.star').each( function () {
+        $(this).html(that.star.empty);
+        $(this).removeClass('hovered-star');
+        $(this).removeClass('selected-star');
       });
     },
     addCard: function (card, id) {
@@ -154,6 +169,11 @@ function BeerView (template) {
       if($(e.target).attr('id') !== 'check01' && $(e.target).tagName !== 'A') {
         $('#check01').prop('checked', false);
       }
+    },
+    clearBeer: function (card) {
+      this.emptyStars(card);
+      $(this.impression).val('');
+      $(this.triedMarker).html('');
     }
   };
 

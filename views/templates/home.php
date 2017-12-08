@@ -73,6 +73,10 @@
                 BeerController.filterBeers(e);
               });
 
+              $(document).on('click', BeerController.view.clearBtn, function (e) {
+                BeerController.clearBeer(e);
+              });
+
               $(document).bindDelay('keyup', '.beer-impression', function(e) {
                 if($(e.target).hasClass('beer-impression'))
                   BeerController.editImpression(e.target);

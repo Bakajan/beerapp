@@ -26,8 +26,8 @@ function beerController (template) {
     view: view,
     updateModel: function (data) {
       if(data.beer) {
-        for(var a = 0; a != that.beers.length; a++) {
-          if(data.beer === that.beers[a].id) {
+        for(var a = 0; a != this.beers.length; a++) {
+          if(data.beer === this.beers[a].id) {
             if(!this.beers[a]['date_submitted'])
               this.beers[a]['date_submitted'] = data.date_submitted;
             break;
@@ -137,6 +137,9 @@ function beerController (template) {
       });
 
       this.view.filterBeers(filteredBeers);
+    },
+    clearBeer: function (e) {
+      this.view.clearBeer(e.target);
     }
   };
 

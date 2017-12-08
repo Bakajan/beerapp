@@ -355,6 +355,29 @@ ul.submenu li a:hover{
 	width: 300px;
 }
 
+.clear-btn {
+  float: right;
+  padding: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.clear-btn:hover {
+  background-color: red;
+  color:white;
+}
+.clear-btn:not( :hover ) {
+  background-color: initial;
+  -webkit-transition: background-color 500ms linear, color 500ms linear;
+  -ms-transition: background-color 500ms linear, color 500ms linear;
+  transition: background-color 500ms linear, color 500ms linear;
+}
+.clear-btn:active {
+  background-color: initial;
+  -webkit-transition: background-color 500ms linear, color 500ms linear;
+  -ms-transition: background-color 500ms linear, color 500ms linear;
+  transition: background-color 500ms linear, color 500ms linear;
+}
+
 @media screen and (max-width: 700px) {
   .card {
     width: 95%;

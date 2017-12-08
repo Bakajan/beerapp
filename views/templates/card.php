@@ -11,6 +11,7 @@
           <div class="beer-abv">(<div class="abv">5.2</div>)</div>
           <div class="abv-sign">%</div>
         </div>
+        <div class="clear-btn">X</div>
     </div>
 
     <div class="beer-top">
