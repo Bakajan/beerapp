@@ -15,9 +15,9 @@
 			<input id="check02" type="checkbox" name="menu"/>
 			<label for="check02">Sort By</label>
 			<ul class="submenu">
-				<li class="sort"><a data-sortable="name">Name</a></li>
-				<li class="sort"><a data-sortable="rating">Rating</a></li>
-				<li class="sort"><a data-sortable="style.shortName">Style</a></li>
+				<li class="sort"><a data-sortable="name">Name<span class="sort-arrow"></span></a></li>
+				<li class="sort"><a data-sortable="rating">Rating<span class="sort-arrow"></span></a></li>
+				<li class="sort"><a data-sortable="style.shortName">Style<span class="sort-arrow"></span></a></li>
 			</ul>
 		</li>
 	</ul>

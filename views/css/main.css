@@ -378,6 +378,13 @@ ul.submenu li a:hover{
   transition: background-color 500ms linear, color 500ms linear;
 }
 
+.sort-arrow {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 700px) {
   .card {
     width: 95%;

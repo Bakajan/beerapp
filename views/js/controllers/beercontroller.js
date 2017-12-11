@@ -26,10 +26,10 @@ function beerController (template) {
     view: view,
     updateModel: function (data) {
       if(data.beer) {
-        for(var a = 0; a != this.models.Beers.beers.length; a++) {
-          if(data.beer === this.models.Beers.beers[a].id) {
-            if(!this.models.Beers.beers[a]['date_submitted'])
-              this.models.Beers.beers[a]['date_submitted'] = data.date_submitted;
+        for(var a = 0; a != this.models.Beers.data.beers.length; a++) {
+          if(data.beer === this.models.Beers.data.beers[a].id) {
+            if(!this.models.Beers.data.beers[a]['date_submitted'])
+              this.models.Beers.data.beers[a]['date_submitted'] = data.date_submitted;
             break;
           }
         }
@@ -47,10 +47,10 @@ function beerController (template) {
           if(data) {
             var json = JSON.parse(data);
             if(json.data)
-              that.models.Beers.beers = json.data;
+              that.models.Beers.data.beers = json.data;
           }
-          if(that.models.Beers.beers) {
-            that.models.Beers.beers.forEach( function (beer, i, a) {
+          if(that.models.Beers.data.beers) {
+            that.models.Beers.data.beers.forEach( function (beer, i, a) {
               mine.forEach( function (myBeer) {
                 if(myBeer.beer_id === beer.id) {
                   if (myBeer.rating) a[i].rating = myBeer.rating;
@@ -60,7 +60,7 @@ function beerController (template) {
                 }
               });
             });
-            that.view.showBeers(that.models.Beers.beers);
+            that.view.showBeers(that.models.Beers.data.beers);
             that.filter();
           }
         });
@@ -110,7 +110,7 @@ function beerController (template) {
       var filteredBeers = [];
       var filters = this.view.getSelectedFilters();
 
-      this.models.Beers.beers.forEach( function (beer) {
+      this.models.Beers.data.beers.forEach( function (beer) {
         if(filters.includes('mine')) {
           if(beer.date_submitted) {
             if(filters.includes('stouts')) {
@@ -142,10 +142,12 @@ function beerController (template) {
       this.view.clearBeer(e.target);
     },
     sortBeers: function (sortBy) {
-      if(this.models.Beers.beers) {
+      if(this.models.Beers.data.beers) {
+        this.models.Beers.setSort(sortBy);
         var beers = [];
-        beers = this.keysort(this.models.Beers.beers, sortBy);
+        beers = this.keysort(this.models.Beers.data.beers, sortBy, this.models.Beers.data.sort.state);
         this.filter();
+        this.view.sortButtons(sortBy, this.models.Beers.data.sort.state);
         this.view.showBeers(beers);
       }
     },

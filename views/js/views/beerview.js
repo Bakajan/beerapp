@@ -177,6 +177,17 @@ function BeerView (template) {
       this.emptyStars(card);
       $(this.impression).val('');
       $(this.triedMarker).html('');
+    },
+    sortButtons: function (sortType, sortState) {
+      $('.sort-arrow').html('');
+
+      var sortable = $('[data-sortable="' + sortType + '"]');
+      if(sortState) {
+        sortable.find('.sort-arrow').append('&uarr;')
+      }
+      else {
+        sortable.find('.sort-arrow').append('&darr;')
+      }
     }
   };
 
