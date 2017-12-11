@@ -10,5 +10,16 @@
 			</ul>
 		</li>
 	</ul>
+	<ul id="menu" class="filter-btn">
+		<li>
+			<input id="check02" type="checkbox" name="menu"/>
+			<label for="check02">Sort By</label>
+			<ul class="submenu">
+				<li class="sort"><a data-sortable="name">Name</a></li>
+				<li class="sort"><a data-sortable="rating">Rating</a></li>
+				<li class="sort"><a data-sortable="style.shortName">Style</a></li>
+			</ul>
+		</li>
+	</ul>
 	<div class="filter-btn right-border"></div>
 </div>

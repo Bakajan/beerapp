@@ -40,7 +40,7 @@ function BeerView (template) {
       else
         return $(selectedCard).find('.beer-impression').val();
     },
-    showBeers: function (beers, myBeers) {
+    showBeers: function (beers) {
       $(this.cardsContainer).html('');
 
       for(var index in beers) {
@@ -168,6 +168,9 @@ function BeerView (template) {
     hideList: function (e) {
       if($(e.target).attr('id') !== 'check01' && $(e.target).tagName !== 'A') {
         $('#check01').prop('checked', false);
+      }
+      if($(e.target).attr('id') !== 'check02' && $(e.target).tagName !== 'A') {
+        $('#check02').prop('checked', false);
       }
     },
     clearBeer: function (card) {

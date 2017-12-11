@@ -73,6 +73,10 @@
                 BeerController.filterBeers(e);
               });
 
+              $(document).on('click', '.sort', function (e) {
+                BeerController.sortBeers($(e.target).attr('data-sortable'));
+              });
+
               $(document).on('click', BeerController.view.clearBtn, function (e) {
                 BeerController.clearBeer(e);
               });
