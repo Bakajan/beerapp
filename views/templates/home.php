@@ -23,11 +23,11 @@
          </p>
         </div>
 
-        <script src="/beerapp/views/js/models/model.js"></script>
-        <script src="/beerapp/views/js/models/beer.js"></script>
-        <script src="/beerapp/views/js/controllers/beercontroller.js"></script>
-        <script src="/beerapp/views/js/views/beerview.js"></script>
         <script>
+          {model}
+		  {beermodel}
+          {beerview}
+		  {beercontroller}
             var BeerController = beerController('{cardtemplate}');
             var timeout;
 

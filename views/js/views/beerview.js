@@ -122,7 +122,7 @@ function BeerView (template) {
       $(this.cardsContainer).append(card);
       $(this.cards).last().attr('id', id);
 
-      // If content larger than screen, send footer to bottom //
+      /* If content larger than screen, send footer to bottom */
       if (window.innerHeight < $(document).height()) {
         this.footer.toggleFixed();
       }
