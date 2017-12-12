@@ -188,6 +188,24 @@ function BeerView (template) {
       else {
         sortable.find('.sort-arrow').append('&darr;')
       }
+    },
+    updateResults: function () {
+      var total = $(this.cards).length;
+      var shown = $(this.cards + ':visible').length;
+      var selectedFilters = [];
+      $('.selected-filter').find('a').each( function () {
+          selectedFilters.push($(this).attr('data-filter'));
+      });
+      $('#total').html(total);
+      if(total !== shown)
+        $('#shown').html(shown);
+      $('#sortedBy').html(selectedFilters.join(','));
+
+      $('.sort-arrow').each( function () {
+        if($(this).text().length > 0) {
+          $('#sortedBy').html($(this).closest('[data-sortable]').attr('data-sortable'));
+        }
+      })
     }
   };
 

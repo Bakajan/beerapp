@@ -12,7 +12,14 @@
           </div>
         </form>
 
-		{filters}
+        {filters}
+
+        <div id="results">
+          <div id="total"></div>
+          <div id="shown"></div>
+          <div id="filters"></div>
+          <div id="sortedby"></div>
+        </div>
 
         <div id="cards-container"></div>
 
