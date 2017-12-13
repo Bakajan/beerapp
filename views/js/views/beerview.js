@@ -66,6 +66,7 @@ function BeerView (template) {
         $(this.cards + '#' + id).find('.beer-desc').html(desc);
 
         this.updateMine(beers[index], id);
+        this.updateResults();
       }
     },
     updateMine: function (beer, id) {
@@ -164,6 +165,8 @@ function BeerView (template) {
         else
           $(this).show();
       });
+
+      this.updateResults();
     },
     hideList: function (e) {
       if($(e.target).attr('id') !== 'check01' && $(e.target).tagName !== 'A') {
@@ -196,16 +199,21 @@ function BeerView (template) {
       $('.selected-filter').find('a').each( function () {
           selectedFilters.push($(this).attr('data-filter'));
       });
-      $('#total').html(total);
+
+      $('#total').html('Results:' + total);
       if(total !== shown)
-        $('#shown').html(shown);
-      $('#sortedBy').html(selectedFilters.join(','));
+        $('#total').append('<div id="shown">' + '(' + shown + ')' + '</div>');
+      else
+        $('#shown').remove();
+
+      $('#filters-used').html('Filters:' + selectedFilters.join(','));
 
       $('.sort-arrow').each( function () {
         if($(this).text().length > 0) {
-          $('#sortedBy').html($(this).closest('[data-sortable]').attr('data-sortable'));
+          var dir = ( $(this).closest('[data-sortable]').find('.sort-arrow').html() === '↑') ? 'ASC' : 'DESC';
+          $('#sortedby').html('Sort By:' + $(this).closest('[data-sortable]').attr('data-sortable') + ' ' + dir);
         }
-      })
+      });
     }
   };
 

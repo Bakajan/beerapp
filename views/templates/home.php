@@ -16,8 +16,7 @@
 
         <div id="results">
           <div id="total"></div>
-          <div id="shown"></div>
-          <div id="filters"></div>
+          <div id="filters-used"></div>
           <div id="sortedby"></div>
         </div>
 
@@ -32,9 +31,10 @@
 
         <script>
           {model}
-		  {beermodel}
+          {beermodel}
           {beerview}
-		  {beercontroller}
+          {beercontroller}
+
             var BeerController = beerController('{cardtemplate}');
             var timeout;
 
