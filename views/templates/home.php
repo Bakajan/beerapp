@@ -9,16 +9,15 @@
                   <input type="submit" id="search-btn" value="" />
                 </span>
             </div>
+            {filters}
+            <div id="results">
+              <div id="total" class="result-label">a</div>
+              <div id="filters-used" class="result-label">a</div>
+              <div id="sortedby" class="result-label">a</div>
+            </div>
+        </div>
           </div>
         </form>
-
-        {filters}
-
-        <div id="results">
-          <div id="total"></div>
-          <div id="filters-used"></div>
-          <div id="sortedby"></div>
-        </div>
 
         <div id="cards-container"></div>
 

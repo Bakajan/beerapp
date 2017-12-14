@@ -58,7 +58,6 @@ you can use the generic selector below, but it's slower:
 }
 
 #search-wrapper {
-    height: 42px;
     background-color: #4C66A4;
     border: 0;
     -moz-box-shadow: none;
@@ -230,18 +229,10 @@ you can use the generic selector below, but it's slower:
 }
 .filter-btn {
 	padding: 10px;
-	background: lightblue; /* For browsers that do not support gradients */
-	background: -webkit-linear-gradient(lightblue, deepskyblue); /* For Safari 5.1 to 6.0 */
-	background: -o-linear-gradient(lightblue, deepskyblue); /* For Opera 11.1 to 12.0 */
-	background: -moz-linear-gradient(lightblue, deepskyblue); /* For Firefox 3.6 to 15 */
-	background: linear-gradient(lightblue, deepskyblue); /* Standard syntax */
-	border-top: dodgerblue 3px outset;
-	border-bottom: dodgerblue 3px outset;
 	display: inline-block;
-	height: 16px;
 	vertical-align: top;
-	margin-left: -5px;
 	cursor: pointer;
+  color: aliceblue;
 }
 .filter-label {
 	position: relative;
@@ -273,6 +264,7 @@ you can use the generic selector below, but it's slower:
 ul#menu {
 	margin: auto;
 	margin-left: -4px;
+  position: relative;
 }
 
 ul#menu > li {
@@ -335,6 +327,7 @@ ul.submenu{
 	transition:max-height 0.5s ease-out;
 	position:absolute;
 	min-width:100%;
+  z-index: 10;
 }
 
 ul.submenu li a{
@@ -383,6 +376,16 @@ ul.submenu li a:hover{
   margin-left: 5px;
   font-size: 20px;
   font-weight: bold;
+}
+
+#results {
+  text-align: center;
+  color: aliceblue;
+}
+
+.result-label {
+  display: inline-block;
+  width: 25%;
 }
 
 @media screen and (max-width: 700px) {
