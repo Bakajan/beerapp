@@ -59,7 +59,7 @@ function Beer (data) {
       clearMine: function (id) {
         for(var a = 0; a !== this.data.beers.length; a++) {
           if(this.data.beers[a].id) {
-            if(this.data.beers[a].id = id) {
+            if(this.data.beers[a].id === id) {
               for(var b = 0; b !== this.attrs.length; b++) {
                 delete this.data.beers[a][this.attrs[b]];
               }
@@ -67,12 +67,10 @@ function Beer (data) {
             }
           }
         }
-        for(var a = 0; a !== this.data.mine.length; a++) {
-          if(this.data.mine[a].id) {
-            if(this.data.mine[a].id = id) {
-              for(var b = 0; b !== this.attrs.length; b++) {
-                delete this.data.mine[a][this.attrs[b]];
-              }
+        for(var b = this.data.mine.length - 1; b >= 0; b--) {
+          if(this.data.mine[b].beer_id) {
+            if(this.data.mine[b].beer_id === id) {
+              this.data.mine.splice(b,1);
               break;
             }
           }

@@ -158,7 +158,7 @@ function beerController (template) {
     },
     clearBeer: function (e) {
       this.models.Beers.clearMine($(e.target).closest(this.view.cards).attr('id'));
-      this.view.clearBeer(e.target);
+      this.view.clearBeer(e.target, this.models.Beers.data.selectedModel);
     },
     sortBeers: function (sortBy) {
       var model = this.models.Beers.data.selectedModel;

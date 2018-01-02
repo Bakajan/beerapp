@@ -91,7 +91,6 @@
           var desc = beer.description || beer.style.description || '';
           $(that.cards + '#' + id).find('.beer-desc').html(desc);
 
-          console.log(beer);
           that.updateMine(beer, id);
         });
 
@@ -194,7 +193,6 @@
     },
     filterBeers: function (filteredBeers) {
       $(this.cards).each( function () {
-        console.log($(this).attr('id'));
         if(!filteredBeers.includes($(this).attr('id')))
           $(this).hide();
         else
@@ -211,10 +209,15 @@
 
       return false;
     },
-    clearBeer: function (card) {
-      this.emptyStars(card);
-      $(this.impression).val('');
-      $(this.triedMarker).html('');
+    clearBeer: function (card, model) {
+      if(model === 'mine') {
+        $('#' + $(card).closest(this.cards).attr('id')).remove();
+      }
+      else {
+        this.emptyStars(card);
+        $(this.impression).val('');
+        $(this.triedMarker).html('');
+      }
     },
     sortButtons: function (sortType, sortState) {
       $('.sort-arrow').html('');
