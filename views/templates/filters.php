@@ -4,8 +4,8 @@
 			<input id="check00" type="checkbox" name="menu"/>
 			<label for="check00">My Beers</label>
 			<ul class="submenu">
-				<li class="filter"><a data-filter="stouts">Show</a></li>
-				<li class="filter"><a data-filter="mine">Stats</a></li>
+				<li class="my-beers"><a>Show</a></li>
+				<li class="my-stats"><a>Stats</a></li>
 			</ul>
 		</li>
 	</ul>

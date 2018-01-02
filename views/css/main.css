@@ -388,6 +388,10 @@ ul.submenu li a:hover{
   width: 25%;
 }
 
+.shown {
+  display: inline-block;
+}
+
 @media screen and (max-width: 700px) {
   .card {
     width: 95%;

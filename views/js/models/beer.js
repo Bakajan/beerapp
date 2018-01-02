@@ -3,12 +3,18 @@ function Beer (data) {
 
   var beer = {
       model: Model(),
+      models: {
+        mine: 'mine',
+        beers: 'beers'
+      },
       data: {
         sort: {
           type: '',
           state: ''
         },
-        beers: []
+        beers: [],
+        mine: [],
+        selectedModel: 'beers'
       },
       attrs: [
         'date_submitted',
@@ -51,11 +57,21 @@ function Beer (data) {
         }
       },
       clearMine: function (id) {
-        for(var a = 0; a != this.data.beers.length; a++) {
+        for(var a = 0; a !== this.data.beers.length; a++) {
           if(this.data.beers[a].id) {
             if(this.data.beers[a].id = id) {
-              for(var b = 0; b != this.attrs.length; b++) {
+              for(var b = 0; b !== this.attrs.length; b++) {
                 delete this.data.beers[a][this.attrs[b]];
+              }
+              break;
+            }
+          }
+        }
+        for(var a = 0; a !== this.data.mine.length; a++) {
+          if(this.data.mine[a].id) {
+            if(this.data.mine[a].id = id) {
+              for(var b = 0; b !== this.attrs.length; b++) {
+                delete this.data.mine[a][this.attrs[b]];
               }
               break;
             }

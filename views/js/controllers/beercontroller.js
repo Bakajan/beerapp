@@ -33,6 +33,12 @@ function beerController (template) {
             break;
           }
         }
+        for(var a = 0; a != this.models.Beers.data.mine.length; a++) {
+          if(data.beer.beer_id === this.models.Beers.data.mine[a].beer_id) {
+            this.models.Beers.data.mine[a] = data.beer;
+            break;
+          }
+        }
       }
     },
     getMine: function (callback) {
@@ -41,63 +47,72 @@ function beerController (template) {
       });
     },
     getBeers: function () {
+      this.models.Beers.data.selectedModel = this.models.Beers.models.beers;
       var that = this;
-      this.getMine( function (mine) {
-        that.models.Beers.find({action: 'beers', term: $('#search-bar').val()}, function (data) {
-          if(data) {
-            var json = JSON.parse(data);
-            if(json.data)
-              that.models.Beers.data.beers = json.data;
-          }
-          if(that.models.Beers.data.beers) {
-            that.models.Beers.data.beers.forEach( function (beer, i, a) {
-              mine.forEach( function (myBeer) {
-                if(myBeer.beer_id === beer.id) {
-                  if (myBeer.rating) a[i].rating = myBeer.rating;
-                  if (myBeer.impression) a[i].impression = myBeer.impression;
-                  if (myBeer.tried) a[i].tried = myBeer.tried;
-                  if (myBeer.date_submitted) a[i].date_submitted = myBeer.date_submitted;
-                }
-              });
-            });
-            that.view.showBeers(that.models.Beers.data.beers);
-            that.filter();
-          }
-        });
+      that.models.Beers.find({action: 'beers', term: $('#search-bar').val()}, function (data) {
+        if(data) {
+          var json = JSON.parse(data);
+          if(json.data)
+            that.models.Beers.data.beers = json.data;
+        }
+        if(that.models.Beers.data.beers) {
+          that.models.Beers.data.beers.forEach( function (beer, i, a) {
+            for(var b = 0; b !== that.models.Beers.data.mine.length; b++) {
+              if(that.models.Beers.data.mine[b].beer_id === beer.id) {
+                if (that.models.Beers.data.mine[b].rating) a[i].rating = that.models.Beers.data.mine[b].rating;
+                if (that.models.Beers.data.mine[b].impression) a[i].impression = that.models.Beers.data.mine[b].impression;
+                if (that.models.Beers.data.mine[b].tried) a[i].tried = that.models.Beers.data.mine[b].tried;
+                if (that.models.Beers.data.mine[b].date_submitted) a[i].date_submitted = that.models.Beers.data.mine[b].date_submitted;
+
+                break;
+              }
+            }
+          });
+          that.view.showBeers(that.models.Beers.data.beers);
+          that.filter();
+        }
       });
+    },
+    editBeer: function (selectedCard, callback) {
+      var beer = this.view.getBeer(selectedCard);
+
+      if(beer) {
+        this.models.Beers.edit({action: 'edit', beer: beer}, function (data) {
+          if(callback)
+            callback(data);
+        });
+      }
     },
     rateBeer: function (selectedStar, selectedCard) {
       var star = this.view.getSelectedStar(selectedStar);
-      var beer_id = this.view.getBeerID(selectedCard);
 
       if(star) {
         this.view.alterRating(selectedStar, selectedCard, 'select');
 
+        var card = $(selectedCard).closest(this.view.cards);
         var that = this;
-        this.models.Beers.edit({action: 'edit', beer: beer_id, field: 'rating', value: star}, function (data) {
+        this.editBeer(card, function (data) {
           if(data)
             that.updateModel(data);
         });
       }
     },
-    selectBeer: function (clickedCard) {
+    selectBeer: function (triedMarker) {
       var that = this;
-      var beer_id = $(clickedCard).closest('.card').attr('id');
-      var asterisk = $(clickedCard).find('.select-asterisk').html();
-      var selected = (asterisk === '*') ? false : true;
+      var clickedCard = $(triedMarker).closest(this.view.cards);
 
-      this.models.Beers.edit({action: 'edit', beer: beer_id, field: 'tried', value: selected}, function (data) {
-          that.view.toggleSelectedBeer(clickedCard);
-          if(data)
-            that.updateModel(data);
+      that.view.toggleSelectedBeer(clickedCard);
+
+      this.editBeer(clickedCard, function (data) {
+        if(data)
+          that.updateModel(data);
       });
     },
     editImpression: function (selectedCard) {
-      var beer_id = this.view.getBeerID(selectedCard);
-      var impression = this.view.getImpression(selectedCard);
       var that = this;
+      var card = $(selectedCard).closest(this.view.cards);
 
-      this.models.Beers.edit({action: 'edit', beer: beer_id, field: 'impression', value: impression}, function (data) {
+      this.editBeer(card, function (data) {
         if(data)
           that.updateModel(data);
       });
@@ -109,28 +124,32 @@ function beerController (template) {
     filter: function () {
       var filteredBeers = [];
       var filters = this.view.getSelectedFilters();
+      var model = this.models.Beers.data.selectedModel;
 
-      this.models.Beers.data.beers.forEach( function (beer) {
+      this.models.Beers.data[model].forEach( function (beer) {
+        var beer_id = (beer.beer_id) ? beer.beer_id : beer.id;
+        var style = (beer.style && beer.style.name) ? beer.style.name : beer.style;
+
         if(filters.includes('mine')) {
           if(beer.date_submitted) {
             if(filters.includes('stouts')) {
-              if(beer.style && beer.style.name.toLowerCase().indexOf('stout') !== -1) {
-                filteredBeers.push(beer.id);
+              if(style.toLowerCase().indexOf('stout') !== -1) {
+                filteredBeers.push(beer_id);
               }
             }
             else {
-              filteredBeers.push(beer.id);
+              filteredBeers.push(beer_id);
             }
           }
         }
         else {
           if(filters.includes('stouts')) {
-            if(beer.style && beer.style.name.toLowerCase().indexOf('stout') !== -1) {
-              filteredBeers.push(beer.id);
+            if(style.toLowerCase().indexOf('stout') !== -1) {
+              filteredBeers.push(beer_id);
             }
           }
           else {
-            filteredBeers.push(beer.id);
+            filteredBeers.push(beer_id);
           }
         }
       });
@@ -142,14 +161,21 @@ function beerController (template) {
       this.view.clearBeer(e.target);
     },
     sortBeers: function (sortBy) {
-      if(this.models.Beers.data.beers) {
+      var model = this.models.Beers.data.selectedModel;
+
+      if(this.models.Beers.data[model]) {
         this.models.Beers.setSort(sortBy);
         var beers = [];
-        beers = this.keysort(this.models.Beers.data.beers, sortBy, this.models.Beers.data.sort.state);
-        this.filter();
+        beers = this.keysort(this.models.Beers.data[model], sortBy, this.models.Beers.data.sort.state);
         this.view.sortButtons(sortBy, this.models.Beers.data.sort.state);
         this.view.showBeers(beers);
+        this.filter();
       }
+    },
+    getMyBeers: function () {
+      this.models.Beers.data.selectedModel = this.models.Beers.models.mine;
+      this.view.showBeers(this.models.Beers.data.mine);
+      this.filter();
     },
     keysort: function (arr, keyArr, reverse) {
       var keyArr = keyArr.split('.');

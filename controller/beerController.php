@@ -17,15 +17,14 @@
                     }
                     else if($_POST['action'] == 'edit') {
                         $beer = isset($_POST['beer']) ? $_POST['beer'] : '';
-                        $field = isset($_POST['field']) ? $_POST['field'] : '';
-                        $value = isset($_POST['value']) ? $_POST['value'] : '';
 
-                        if(empty($beer) || empty($field) || empty($value))
+                        if(empty($beer))
                             echo json_encode(['status' => 'failure', 'error' => 'Empty vars']);
                         else
-                            echo $this->BEER->update($beer, $field, $value);
+                            echo $this->BEER->update($beer);
                     }
                     else if($_POST['action'] == 'mine') {
+	                    header('Content-type: application/json');
                         echo $this->BEER->get_mine();
                     }
                 }
@@ -34,4 +33,4 @@
     }
     
     $beer_controller = new beerController();
-?>
+?> 

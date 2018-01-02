@@ -27,10 +27,10 @@
             $stmt = $connection->conn->prepare($sql);
             try {
                 $stmt->execute();
-                $results  = $stmt->fetchAll();
+                $results  = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
             catch(PDOException $e){
-                echo json_encode($e);
+                return json_encode($e);
             }
             
             $connection->conn = null;
@@ -71,14 +71,14 @@
             return json_encode($this->call($url));
         }
 
-        public function count ($beer_id) {
+        public function count ($beer) {
 	        /// Connect to db
 	        $connection = new Connecter();
 	        /// Add email and name to mailing list
-	        $sql ="SELECT 1 FROM beers WHERE beer_id=:beer";
+	        $sql ="SELECT 1 FROM beers WHERE beer_id = :beer";
 	        $stmt = $connection->conn->prepare($sql);
 	        try {
-		        $results = $stmt->execute([':beer' => $beer_id]);
+		        $results = $stmt->execute([':beer' => $beer['beer_id']]);
 	        }
 	        catch(PDOException $e) {
 		        echo json_encode($e);
@@ -90,9 +90,7 @@
 	        return $stmt->fetchColumn();
         }
 
-        public function update ($beer, $field, $value) {
-        	//echo $value; die;
-            $value = ($value === 'false') ? 0 : ($value === 'true') ? 1 : $value;
+        public function update ($beer) {
             /// Connect to db
             $connection = new Connecter();
             $result = [
@@ -101,13 +99,26 @@
             ];
 
         	if($this->count($beer)) { // if found one update beer //
-		        $sql ="UPDATE beers SET ${field} = :value WHERE beer_id = :beer";
+		        $sql ="UPDATE beers ";
+		        $sql .= "SET ";
+
+		        $numItems = count(array_keys($beer));
+		        $i = 0;
+		        $pdo_Array = [];
+		        foreach ($beer as $key => $value) {
+		        	$pdo_key = ":" . $key;
+			        $sql .= $key . '=' . $pdo_key;
+			        if(++$i !== $numItems) {
+				        $sql .= ', ';
+			        }
+
+			        $pdo_Array[$pdo_key] = $this->toBoolean($value);
+		        }
+		        $sql .= " WHERE beer_id = :beer_id";
+
 		        $stmt = $connection->conn->prepare($sql);
 		        try {
-			        $results = $stmt->execute( [
-                        ":beer" => $beer,
-		                ":value" => $value
-			        ]);
+			        $results = $stmt->execute($pdo_Array);
 		        }
 		        catch(PDOException $e) {
                     $result['errors'][] = $e;
@@ -121,12 +132,20 @@
 		        /// Connect to db
 		        $connection = new Connecter();
 		        /// Add email and name to mailing list
-		        $sql  = "Insert INTO beers (beer_id, {$field}, date_submitted) VALUES (:beer_id, :${field}, NOW())";
+		        $sql  = "Insert INTO beers (beer_id, tried, rating, impression, icon, name, style, description, abv, date_submitted) 
+							VALUES (:beer_id, :tried, :rating, :impression, :icon, :name, :style, :description, :abv, NOW())";
 		        $stmt = $connection->conn->prepare( $sql );
 		        try {
 			        $results = $stmt->execute([
-			        	":beer_id" => $beer,
-			        	":{$field}" => $value
+			        	":beer_id" => $beer['beer_id'],
+			        	":tried" => $this->toBoolean($beer['tried']),
+				        ":rating" => $beer['rating'],
+				        ":impression" => $beer['impression'],
+				        ":icon" => $beer['icon'],
+				        ":name" => $beer['name'],
+				        ":style" => $beer['style'],
+				        ":description" => $beer['description'],
+				        ":abv" => $beer['abv']
 			        ]);
 		        } catch ( PDOException $e ) {
                     $result['errors'][] = $e;
@@ -138,11 +157,12 @@
 	        }
 
 	        if($results) {
+        		$beer['tried'] = intval($beer['tried']);
 		        $result['date_submitted'] = date( "Y-m-d H:i:s" );
 		        $result['beer']           = $beer;
 	        }
 
-	        return json_encode($result);
+	        return json_encode($result, JSON_NUMERIC_CHECK);
         }
 
         public function findMine () {

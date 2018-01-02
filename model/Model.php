@@ -36,5 +36,14 @@
              
             return $results;
         }
+
+        public function toBoolean ($value) {
+            if($value === 'true')
+                return 1;
+            else if ($value === 'false')
+                return 0;
+            else
+                return $value;
+        }
     }
 ?>

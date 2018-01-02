@@ -1,10 +1,11 @@
-function BeerView (template) {
+  function BeerView (template) {
   var card = template;
 
   var view = {
     card: card,
     cardsContainer: '#cards-container',
     cards: '.card',
+    menu: '[name="menu"]',
     star: {
       solid: '&#9733;',
       empty: '&#9734;'
@@ -22,6 +23,23 @@ function BeerView (template) {
       }
     },
 
+    getBeer: function (selectedCard) {
+      var beer = {};
+      if($(selectedCard).hasClass('card')) {
+        beer.beer_id = $(selectedCard).attr('id');
+        var asterisk = $(selectedCard).find('.select-asterisk').html();
+        beer.tried = (asterisk === '*');
+        beer.rating = $(selectedCard).find('.selected-star').length;
+        beer.impression = $(selectedCard).find('.beer-impression').val();
+        beer.icon = $(selectedCard).find('.beer-icon').find('img').attr('src');
+        beer.name = $(selectedCard).find('.beer-name').html();
+        beer.style = $(selectedCard).find('.beer-style').html();
+        beer.description = $(selectedCard).find('.beer-desc').html();
+        beer.abv = $(selectedCard).find('.beer-abv').html();
+      }
+
+      return beer;
+    },
     getBeerID: function (selectedCard) {
       if($(selectedCard).hasClass('card'))
         $(selectedCard).attr('id');
@@ -41,47 +59,63 @@ function BeerView (template) {
         return $(selectedCard).find('.beer-impression').val();
     },
     showBeers: function (beers) {
-      $(this.cardsContainer).html('');
+      if(beers.length > 0) {
+        $(this.cardsContainer).html('');
 
-      for(var index in beers) {
-        var id = beers[index].id;
-        this.addCard(this.card, id);
+        var that = this;
 
-        $(this.cards + '#' + id).find('.beer-name').html(beers[index].name);
+        beers.forEach( function (beer) {
+          var id = (beer.beer_id) ? beer.beer_id : beer.id;
+          var style = (beer.style.shortName) ? beer.style.shortName : beer.style;
 
-        if(beers[index].available)
-          $(this.cards + '#' + id).find('.beer-avail').html(beers[index].available.name);
+          var cardSelector = $(that.cards + '#' + id);
+          that.addCard(that.card, id);
 
-        if(beers[index].style)
-          $(this.cards + '#' + id).find('.beer-style').html(beers[index].style.shortName);
+          $(that.cards + '#' + id).find('.beer-name').html(beer.name);
 
-        $(this.cards + '#' + id).find('.abv-container').find('.beer-abv').html(beers[index].abv);
+          if(beer.available)
+            $(that.cards + '#' + id).find('.beer-avail').html(beer.available.name);
 
-        if(beers[index].labels || beers[index].images) {
-          var icon = (beers[index].labels) ? 'labels' : 'images';
-          $(this.cards + '#' + id).find('.beer-icon img').attr('src', beers[index][icon].icon);
-        }
+          if(beer.style)
+            $(that.cards + '#' + id).find('.beer-style').html(style);
 
-        var desc = beers[index].description || beers[index].style.description || '';
-        $(this.cards + '#' + id).find('.beer-desc').html(desc);
+          $(that.cards + '#' + id).find('.abv-container').find('.beer-abv').html(beer.abv);
 
-        this.updateMine(beers[index], id);
-        this.updateResults();
+          if(beer.labels || beer.images) {
+            var icon = (beer.labels) ? 'labels' : 'images';
+            $(that.cards + '#' + id).find('.beer-icon img').attr('src', beer[icon].icon);
+          }
+          else if (beer.icon)
+            $(that.cards + '#' + id).find('.beer-icon img').attr('src', beer.icon);
+
+          var desc = beer.description || beer.style.description || '';
+          $(that.cards + '#' + id).find('.beer-desc').html(desc);
+
+          console.log(beer);
+          that.updateMine(beer, id);
+        });
+
+        that.updateResults();
+      }
+      else {
+        $(this.cardsContainer).html('').append('No Results');
       }
     },
     updateMine: function (beer, id) {
       var that = this;
-      if(beer.tried)
-        $('#' + beer.id).find('.select-asterisk').html('*');
+      var beerSelector = $('#' + id);
 
-      $('#' + beer.id).find('.star').each( function (index) {
+      if(beer.tried == '1')
+        $('#' + id).find('.select-asterisk').html('*');
+
+      beerSelector.find('.star').each( function (index) {
         var next = index + 1;
         if(next <= beer.rating)
           $(this).html(that.star.solid).addClass('selected-star');
       });
 
-      $('#' + beer.id).find('.beer-impression').val(beer.impression);
-      this.updateImpression($('#' + beer.id).find('.beer-impression'));
+      beerSelector.find('.beer-impression').val(beer.impression);
+      this.updateImpression(beerSelector.find('.beer-impression'));
     },
     alterRating: function (selectedStar, selectedCard, how) {
       var star = this.getSelectedStar(selectedStar);
@@ -160,6 +194,7 @@ function BeerView (template) {
     },
     filterBeers: function (filteredBeers) {
       $(this.cards).each( function () {
+        console.log($(this).attr('id'));
         if(!filteredBeers.includes($(this).attr('id')))
           $(this).hide();
         else
@@ -168,13 +203,13 @@ function BeerView (template) {
 
       this.updateResults();
     },
-    hideList: function (e) {
-      if($(e.target).attr('id') !== 'check01' && $(e.target).tagName !== 'A') {
-        $('#check01').prop('checked', false);
-      }
-      if($(e.target).attr('id') !== 'check02' && $(e.target).tagName !== 'A') {
-        $('#check02').prop('checked', false);
-      }
+    hideMenus: function (e) {
+      $('[name="menu"]').each( function () {
+        if(!$(e.target).is($(this)))
+          $(this).prop('checked', false);
+      });
+
+      return false;
     },
     clearBeer: function (card) {
       this.emptyStars(card);

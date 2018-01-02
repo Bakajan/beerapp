@@ -11,9 +11,9 @@
             </div>
             {filters}
             <div id="results">
-              <div id="total" class="result-label">a</div>
-              <div id="filters-used" class="result-label">a</div>
-              <div id="sortedby" class="result-label">a</div>
+              <div id="total" class="result-label"></div>
+              <div id="filters-used" class="result-label"></div>
+              <div id="sortedby" class="result-label"></div>
             </div>
         </div>
           </div>
@@ -37,11 +37,13 @@
             var BeerController = beerController('{cardtemplate}');
             var timeout;
 
-            $(document).ready(function() {
-              $(document).click( function (e) {
-               BeerController.view.hideList(e);
-              });
+          $.holdReady( true );
+          BeerController.getMine( function (myBeers) {
+            BeerController.models.Beers.data.mine = myBeers;
+            $.holdReady(false);
+          });
 
+            $(document).ready(function() {
               $('#search-form').submit(function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -50,10 +52,6 @@
                 BeerController.getBeers();
 
                 return false;
-              });
-
-              $('#search-btn').click(function (e) {
-                BeerController.getBeers();
               });
 
               $(document).on('click', '.tried-marker', function () {
@@ -87,10 +85,22 @@
                 BeerController.clearBeer(e);
               });
 
+              $(document).on('click', '.my-beers', function (e) {
+                BeerController.getMyBeers(e);
+              });
+
               $(document).bindDelay('keyup', '.beer-impression', function(e) {
                 if($(e.target).hasClass('beer-impression'))
                   BeerController.editImpression(e.target);
               }, 1000);
+
+              $(document).on('click', BeerController.view.menu, function (e) {
+                BeerController.view.hideMenus(e);
+              });
+
+              $(document).on('click', function (e) {
+                BeerController.view.hideMenus(e);
+              });
             });
         </script>
     </body>
