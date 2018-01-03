@@ -1,8 +1,8 @@
-function beerController (template) {
+function beerController (templates) {
   var models = {
     Beers: Beer()
   };
-  var view = BeerView(template);
+  var view = BeerView(templates);
 
   $.fn.bindDelay = function( eventType, eventData, handler, timer ) {
     if ( $.isFunction(eventData) ) {
@@ -51,9 +51,19 @@ function beerController (template) {
       var that = this;
       that.models.Beers.find({action: 'beers', term: $('#search-bar').val()}, function (data) {
         if(data) {
-          var json = JSON.parse(data);
-          if(json.data)
-            that.models.Beers.data.beers = json.data;
+          if(data.result) {
+            if(data.result === 'failure') {
+              console.log(data.message);
+              that.view.addPopup(data.result, data.message);
+            }
+            else {
+              if(data.data) {
+                var json = JSON.parse(data.data);
+                if(json.data)
+                  that.models.Beers.data.beers = json.data;
+              }
+            }
+          }
         }
         if(that.models.Beers.data.beers) {
           that.models.Beers.data.beers.forEach( function (beer, i, a) {

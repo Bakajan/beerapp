@@ -28,13 +28,15 @@
          </p>
         </div>
 
+        <div id="popup-wrapper"></div>
+        
         <script>
           {model}
           {beermodel}
           {beerview}
           {beercontroller}
 
-            var BeerController = beerController('{cardtemplate}');
+            var BeerController = beerController({card: '{cardtemplate}', popup: '{popup}'});
             var timeout;
 
           $.holdReady( true );

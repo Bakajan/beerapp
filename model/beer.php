@@ -64,11 +64,24 @@
         }
 
         public function find ($term) {
-            $term = (isset($term)) ? $term : ' ';
+        	$result = ['result' => '', 'message' => ''];
+
+            $term = (isset($term)) ? $term : '';
+
+            if(empty($term)) {
+            	$result['result'] = 'failure';
+            	$result['message'] = 'Empty search term';
+	            return json_encode( $result );
+            }
+            else
+            	$result['result'] = 'success';
+
             $this->ARGS['q'] = $term;
             $url =  $this->URL . $this->ENDPOINT . "/" . "?" . http_build_query($this->ARGS);
 
-            return json_encode($this->call($url));
+            $result['data'] = $this->call($url);
+
+            return json_encode($result);
         }
 
         public function count ($beer) {

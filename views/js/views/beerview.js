@@ -1,8 +1,10 @@
-  function BeerView (template) {
-  var card = template;
+  function BeerView (templates) {
+  var card = templates.card;
+  var popup = templates.popup;
 
   var view = {
     card: card,
+    popup: popup,
     cardsContainer: '#cards-container',
     cards: '.card',
     menu: '[name="menu"]',
@@ -251,6 +253,17 @@
           var dir = ( $(this).closest('[data-sortable]').find('.sort-arrow').html() === '↑') ? 'ASC' : 'DESC';
           $('#sortedby').html('Sort By:' + $(this).closest('[data-sortable]').attr('data-sortable') + ' ' + dir);
         }
+      });
+    },
+    addPopup: function (type, message) {
+      $('#popup-wrapper').append(this.popup);
+      $('.popup').addClass(type);
+      $('.popup').find('.message').html(message);
+
+      $('#popup-wrapper').children('div').each(function (index) {
+        $(this).delay(2000 + (2000 * index)).fadeOut(400, function () {
+          $(this).remove();
+        });
       });
     }
   };

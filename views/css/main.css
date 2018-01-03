@@ -392,6 +392,26 @@ ul.submenu li a:hover{
   display: inline-block;
 }
 
+#popup-wrapper {
+	position: fixed;
+	z-index: 2;
+	bottom: 15px;
+	right: 15px;
+}
+
+.popup {
+	position: relative;
+	padding: 10px;
+	border: 3px outset;
+	margin: 5px;
+	background: ghostwhite;
+	box-shadow: 3px 2px 10px 0 black;
+}
+
+.popup.failure {
+	color: red;
+}
+
 @media screen and (max-width: 700px) {
   .card {
     width: 95%;
