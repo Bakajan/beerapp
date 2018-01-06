@@ -11,16 +11,14 @@ function Model () {
                 method: "POST",
                 dataType: 'json',
                 success: function (data) {
-                    if(data.status === 'failure') {
-                        console.log(JSON.stringify(data));
-                    }
-                    else
-                        callback(data);
+                    callback(data);
                 },
-                error: function (xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status);
-                    console.log(error);
+                error: function (xhr, status, err) {
+                    var error = {
+                      type: 'failure',
+                      message: status + ': ' + xhr + ': ' + err
+                    };
+                    callback(error);
                 }
             });
         }

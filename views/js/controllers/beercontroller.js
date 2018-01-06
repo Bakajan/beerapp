@@ -167,9 +167,12 @@ function beerController (templates) {
       this.view.filterBeers(filteredBeers);
     },
     clearBeer: function (e) {
-      this.models.Beers.clearMine($(e.target).closest(this.view.cards).attr('id'));
-      this.view.clearBeer(e.target, this.models.Beers.data.selectedModel);
-      this.view.updateResults();
+      var that = this;
+      this.models.Beers.clearMine($(e.target).closest(this.view.cards).attr('id'), function (data) {
+        that.view.addPopup(data.type, data.message);
+        that.view.clearBeer(e.target, that.models.Beers.data.selectedModel);
+        that.view.updateResults();
+      });
     },
     sortBeers: function (sortBy) {
       var model = this.models.Beers.data.selectedModel;

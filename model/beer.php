@@ -107,8 +107,8 @@
             /// Connect to db
             $connection = new Connecter();
             $result = [
-                'result' => 'Success',
-                'errors' => []
+                'type' => 'success',
+                'message' => 'Beer Updated!'
             ];
 
         	if($this->count($beer)) { // if found one update beer //
@@ -134,14 +134,15 @@
 			        $results = $stmt->execute($pdo_Array);
 		        }
 		        catch(PDOException $e) {
-                    $result['errors'][] = $e;
-			        echo json_encode($e);
+	                $result['type'] = 'failure';
+                    $result['message'] = $e.errorInfo;
 		        }
 
 		        $connection->conn = null;
 		        $connection = null;
 	        }
 	        else { // if not found add beer //
+		        $result['message'] = 'Beer Added!';
 		        /// Connect to db
 		        $connection = new Connecter();
 		        /// Add email and name to mailing list
@@ -161,8 +162,8 @@
 				        ":abv" => $beer['abv']
 			        ]);
 		        } catch ( PDOException $e ) {
-                    $result['errors'][] = $e;
-			        echo json_encode( $e );
+			        $result['type'] = 'failure';
+                    $result['message'] = $e.errorInfo;
 		        }
 
 		        $connection->conn = null;
@@ -178,8 +179,35 @@
 	        return json_encode($result, JSON_NUMERIC_CHECK);
         }
 
-        public function findMine () {
+        public function delete ($beer_id) {
+            $result = [
+                'type' => 'success',
+                'message' => 'Beer Deleted!'
+            ];
+            if(empty($beer_id)) {
+                $result['type'] = 'failure';
+                $result['message'] = 'Bad ID';
+                return $result;
+            }
 
+            $connection = new Connecter();
+            /// Add email and name to mailing list
+            $sql  = "DELETE FROM beers WHERE beer_id = :beer_id";
+            $stmt = $connection->conn->prepare( $sql );
+            try {
+                if(!$stmt->execute([":beer_id" => $beer_id])){
+                    $result['type'] = 'failure';
+                    $result['message'] = 'Delete Failed!';
+                }
+            } catch ( PDOException $e ) {
+               $result['type'] = 'failure';
+               $result['message'] = $e.errorInfo;
+            }
+
+            $connection->conn = null;
+            $connection       = null;
+
+            return $result;
         }
     }
 ?>

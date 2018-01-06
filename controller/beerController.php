@@ -19,13 +19,22 @@
                         $beer = isset($_POST['beer']) ? $_POST['beer'] : '';
 
                         if(empty($beer))
-                            echo json_encode(['status' => 'failure', 'error' => 'Empty vars']);
+                            echo json_encode(['type' => 'failure', 'message' => 'Empty vars']);
                         else
                             echo $this->BEER->update($beer);
                     }
                     else if($_POST['action'] == 'mine') {
-	                    header('Content-type: application/json');
+                        header('Content-type: application/json');
                         echo $this->BEER->get_mine();
+                    }
+                    else if($_POST['action'] == 'delete') {
+                        $beer_id = isset($_POST['beerID']) ? $_POST['beerID'] : '';
+
+                        header('Content-type: application/json');
+                        if(empty($beer_id))
+                            echo json_encode(['type' => 'failure', 'message' => 'Empty vars']);
+                        else
+                            echo json_encode($this->BEER->delete($beer_id));
                     }
                 }
             }

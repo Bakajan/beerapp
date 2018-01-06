@@ -32,6 +32,9 @@ function Beer (data) {
       fetch: function (params, callback) {
         this.model.call(this.url, 'mine', params, callback);
       },
+      delete: function (beer_id, callback) {
+        this.model.call(this.url, 'delete', {beerID: beer_id}, callback);
+      },
       getBeer: function (id) {
         for(var a = 0; a != this.data.beers.length; a++) {
             if(this.data.beers[a].id) {
@@ -56,7 +59,7 @@ function Beer (data) {
           this.data.sort.state = false;
         }
       },
-      clearMine: function (id) {
+      clearMine: function (id, callback) {
         for(var a = 0; a !== this.data.beers.length; a++) {
           if(this.data.beers[a].id) {
             if(this.data.beers[a].id === id) {
@@ -75,6 +78,10 @@ function Beer (data) {
             }
           }
         }
+        this.delete(id, function (data) {
+          if(callback)
+            callback(data);
+        });
       }
   };
 

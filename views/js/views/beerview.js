@@ -256,6 +256,10 @@
       });
     },
     addPopup: function (type, message) {
+      var type = (type) ? type : 'failure';
+      var message = (message) ? message : 'No data!';
+      message = (Array.isArray(message)) ? message.join('<br />') : message;
+
       $('#popup-wrapper').append(this.popup);
       $('.popup').addClass(type);
       $('.popup').find('.message').html(message);
