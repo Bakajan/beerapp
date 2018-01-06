@@ -39,6 +39,7 @@ function beerController (templates) {
             break;
           }
         }
+        this.view.addPopup(data.type, data.message);
       }
     },
     getMine: function (callback) {
