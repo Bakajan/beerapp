@@ -61,12 +61,12 @@
         return $(selectedCard).find('.beer-impression').val();
     },
     showBeers: function (beers) {
-      if(beers.length > 0) {
+      if(beers.beers.length > 0) {
         $(this.cardsContainer).html('');
 
         var that = this;
 
-        beers.forEach( function (beer) {
+        beers.beers.forEach( function (beer) {
           var id = (beer.beer_id) ? beer.beer_id : beer.id;
           var style = (beer.style.shortName) ? beer.style.shortName : beer.style;
 
@@ -96,7 +96,7 @@
           that.updateMine(beer, id);
         });
 
-        that.updateResults();
+        that.updateResults(beers.total);
       }
       else {
         $(this.cardsContainer).html('').append('No Results');
@@ -193,7 +193,7 @@
       $(el).css('padding', '0');
       $(el).css('height', el[0].scrollHeight + 'px');
     },
-    filterBeers: function (filteredBeers) {
+    filterBeers: function (filteredBeers, total) {
       $(this.cards).each( function () {
         if(!filteredBeers.includes($(this).attr('id')))
           $(this).hide();
@@ -201,7 +201,7 @@
           $(this).show();
       });
 
-      this.updateResults();
+      this.updateResults(total);
     },
     hideMenus: function (e) {
       $('[name="menu"]').each( function () {
@@ -211,8 +211,8 @@
 
       return false;
     },
-    clearBeer: function (card, model) {
-      if(model === 'mine') {
+    clearBeer: function (card, model, models) {
+      if(model === models.mine) {
         $('#' + $(card).closest(this.cards).attr('id')).remove();
       }
       else {
@@ -232,7 +232,7 @@
         sortable.find('.sort-arrow').append('&darr;')
       }
     },
-    updateResults: function () {
+    updateResults: function (fullTotal) {
       var total = $(this.cards).length;
       var shown = $(this.cards + ':visible').length;
       var selectedFilters = [];
@@ -240,18 +240,19 @@
           selectedFilters.push($(this).attr('data-filter'));
       });
 
-      $('#total').html('Results:' + total);
+      $('#total').html('Results: ' + total);
       if(total !== shown)
         $('#total').append('<div id="shown">' + '(' + shown + ')' + '</div>');
       else
         $('#shown').remove();
+      $('#total').append(' - ' + fullTotal);
 
-      $('#filters-used').html('Filters:' + selectedFilters.join(','));
+      $('#filters-used').html('Filters: ' + selectedFilters.join(','));
 
       $('.sort-arrow').each( function () {
         if($(this).text().length > 0) {
           var dir = ( $(this).closest('[data-sortable]').find('.sort-arrow').html() === '↑') ? 'ASC' : 'DESC';
-          $('#sortedby').html('Sort By:' + $(this).closest('[data-sortable]').attr('data-sortable') + ' ' + dir);
+          $('#sortedby').html('Sort By: ' + $(this).closest('[data-sortable]').attr('data-sortable') + ' ' + dir);
         }
       });
     },

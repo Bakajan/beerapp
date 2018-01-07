@@ -10,6 +10,7 @@
                 </span>
             </div>
             {filters}
+			  <hr />
             <div id="results">
               <div id="total" class="result-label"></div>
               <div id="filters-used" class="result-label"></div>
@@ -41,7 +42,6 @@
 
           $.holdReady( true );
           BeerController.getMine( function (myBeers) {
-            BeerController.models.Beers.data.mine = myBeers;
             $.holdReady(false);
           });
 
