@@ -12,8 +12,9 @@
                 if(isset($_POST['action'])) {
                     if($_POST['action'] == 'beers') {
                         $term = isset($_POST['term']) ? $_POST['term'] : '';
+                        $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
                         
-                        echo $this->BEER->find($term);
+                        echo $this->BEER->find($term, $page);
                     }
                     else if($_POST['action'] == 'edit') {
                         $beer = isset($_POST['beer']) ? $_POST['beer'] : '';

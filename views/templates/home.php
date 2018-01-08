@@ -103,6 +103,10 @@
               $(document).on('click', function (e) {
                 BeerController.view.hideMenus(e);
               });
+
+              $(document).on('scroll', function (e) {
+                BeerController.handleScroll(e);
+              })
             });
         </script>
     </body>

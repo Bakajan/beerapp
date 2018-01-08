@@ -58,10 +58,11 @@ function beerController (templates) {
       });
     },
     getBeers: function () {
+      this.models.Beers.data.allBeers.term = $('#search-bar').val();
       this.models.Beers.data.allBeers.resetBeers();
       this.models.Beers.data.selectedModel = this.models.Beers.models.beers;
       var that = this;
-      that.models.Beers.find({action: 'beers', term: $('#search-bar').val()}, function (data) {
+      this.models.Beers.find({action: 'beers', term: this.models.Beers.data.allBeers.term}, function (data) {
         if(data) {
           if(data.result) {
             if(data.result === 'failure') {
@@ -196,7 +197,9 @@ function beerController (templates) {
           this.view.sortButtons(finalSort, this.models.Beers.data.sort.state);
         }
 
-        this.models.Beers.data[model].beers = this.keysort(this.models.Beers.data[model].beers, finalSort, this.models.Beers.data.sort.state);
+        if(finalSort)
+          this.models.Beers.data[model].beers = this.keysort(this.models.Beers.data[model].beers, finalSort, this.models.Beers.data.sort.state);
+
         this.view.showBeers(this.models.Beers.data[model]);
         this.filter();
       }
@@ -205,6 +208,49 @@ function beerController (templates) {
       this.models.Beers.data.selectedModel = this.models.Beers.models.mine;
       this.view.showBeers(this.models.Beers.data[this.models.Beers.data.selectedModel]);
       this.sortBeers('');
+    },
+    handleScroll: function (e) {
+      if(this.view.isScrollBottom()) {
+        if(this.models.Beers.data.allBeers.page < this.models.Beers.data.allBeers.pages) {
+          var page = this.models.Beers.data.allBeers.page + 1;
+          var term = this.models.Beers.data.allBeers.term;
+          var that = this;
+
+          this.models.Beers.find({action: 'beers', term: term, page: page}, function (data) {
+            if(data) {
+              if(data.result) {
+                if(data.result === 'failure') {
+                  that.view.addPopup(data.result, data.message);
+                }
+                else {
+                  if(data.data) {
+                    var json = JSON.parse(data.data);
+                    if(json.data) {
+                      that.models.Beers.data.allBeers.beers = that.models.Beers.data.allBeers.beers.concat(json.data);
+                    }
+                  }
+                }
+              }
+            }
+            if(that.models.Beers.data.allBeers.beers) {
+              that.models.Beers.data.allBeers.beers.forEach( function (beer, i, a) {
+                for(var b = 0; b !== that.models.Beers.data.myBeers.beers.length; b++) {
+                  if(that.models.Beers.data.myBeers.beers[b].beer_id === beer.id) {
+                    if (that.models.Beers.data.myBeers.beers[b].rating) a[i].rating = that.models.Beers.data.myBeers.beers[b].rating;
+                    if (that.models.Beers.data.myBeers.beers[b].impression) a[i].impression = that.models.Beers.data.myBeers.beers[b].impression;
+                    if (that.models.Beers.data.myBeers.beers[b].tried) a[i].tried = that.models.Beers.data.myBeers.beers[b].tried;
+                    if (that.models.Beers.data.myBeers.beers[b].date_submitted) a[i].date_submitted = that.models.Beers.data.myBeers.beers[b].date_submitted;
+
+                    break;
+                  }
+                }
+              });
+              that.view.showBeers(that.models.Beers.data[that.models.Beers.data.selectedModel]);
+              that.sortBeers('');
+            }
+          });
+        }
+      }
     },
     keysort: function (arr, keyArr, reverse) {
       var keyArr = keyArr.split('.');

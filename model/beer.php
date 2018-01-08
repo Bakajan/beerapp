@@ -63,20 +63,21 @@
             echo json_encode('');
         }
 
-        public function find ($term) {
-        	$result = ['result' => '', 'message' => ''];
-
-            $term = (isset($term)) ? $term : '';
+        public function find ($term, $page) {
+            $result = ['result' => '', 'message' => ''];
 
             if(empty($term)) {
-            	$result['result'] = 'failure';
-            	$result['message'] = 'Empty search term';
-	            return json_encode( $result );
+                $result['result'] = 'failure';
+                $result['message'] = 'Empty search term';
+                return json_encode( $result );
             }
             else
-            	$result['result'] = 'success';
+                $result['result'] = 'success';
 
             $this->ARGS['q'] = $term;
+            if(!empty($page))
+                $this->ARGS['p'] = $page;
+
             $url =  $this->URL . $this->ENDPOINT . "/" . "?" . http_build_query($this->ARGS);
 
             $result['data'] = $this->call($url);

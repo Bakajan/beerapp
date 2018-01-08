@@ -8,6 +8,7 @@ function Beer (data) {
         beers: 'allBeers'
       },
       data: {
+        term: '',
         sort: {
           type: '',
           state: ''

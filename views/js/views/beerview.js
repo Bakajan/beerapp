@@ -233,6 +233,11 @@
         sortable.find('.sort-arrow').html('&darr;')
       }
     },
+    isScrollBottom: function () {
+      var y = (window.scrollY) ? window.scrollY : document.documentElement.scrollTop;
+
+      return (window.innerHeight + y) >= document.body.offsetHeight;
+    },
     updateResults: function (fullTotal) {
       var total = $(this.cards).length;
       var shown = $(this.cards + ':visible').length;
