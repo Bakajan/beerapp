@@ -222,14 +222,15 @@
       }
     },
     sortButtons: function (sortType, sortState) {
+      var sortable = $('[data-sortable="' + sortType + '"]');
+
       $('.sort-arrow').html('');
 
-      var sortable = $('[data-sortable="' + sortType + '"]');
       if(sortState) {
-        sortable.find('.sort-arrow').append('&uarr;')
+        sortable.find('.sort-arrow').html('&uarr;')
       }
       else {
-        sortable.find('.sort-arrow').append('&darr;')
+        sortable.find('.sort-arrow').html('&darr;')
       }
     },
     updateResults: function (fullTotal) {

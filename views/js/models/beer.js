@@ -34,7 +34,7 @@ function Beer (data) {
           total: 0,
           beers: []
         },
-        selectedModel: 'beers'
+        selectedModel: 'allBeers'
       },
       attrs: [
         'date_submitted',

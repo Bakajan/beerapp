@@ -91,7 +91,7 @@ function beerController (templates) {
             }
           });
           that.view.showBeers(that.models.Beers.data[that.models.Beers.data.selectedModel]);
-          that.filter();
+          that.sortBeers('');
         }
       });
     },
@@ -188,11 +188,15 @@ function beerController (templates) {
     },
     sortBeers: function (sortBy) {
       var model = this.models.Beers.data.selectedModel;
+      var finalSort = (sortBy) ? sortBy : $('[data-sortable]').find('.sort-arrow').not(':empty').closest('[data-sortable]').attr('data-sortable');
 
       if(this.models.Beers.data[model].beers) {
-        this.models.Beers.setSort(sortBy);
-        this.models.Beers.data[model].beers = this.keysort(this.models.Beers.data[model].beers, sortBy, this.models.Beers.data.sort.state);
-        this.view.sortButtons(sortBy, this.models.Beers.data.sort.state);
+        if(sortBy) {
+          this.models.Beers.setSort(finalSort);
+          this.view.sortButtons(finalSort, this.models.Beers.data.sort.state);
+        }
+
+        this.models.Beers.data[model].beers = this.keysort(this.models.Beers.data[model].beers, finalSort, this.models.Beers.data.sort.state);
         this.view.showBeers(this.models.Beers.data[model]);
         this.filter();
       }
@@ -200,7 +204,7 @@ function beerController (templates) {
     getMyBeers: function () {
       this.models.Beers.data.selectedModel = this.models.Beers.models.mine;
       this.view.showBeers(this.models.Beers.data[this.models.Beers.data.selectedModel]);
-      this.filter();
+      this.sortBeers('');
     },
     keysort: function (arr, keyArr, reverse) {
       var keyArr = keyArr.split('.');
