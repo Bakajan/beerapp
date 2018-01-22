@@ -68,7 +68,8 @@
 
         beers.beers.forEach( function (beer) {
           var id = (beer.beer_id) ? beer.beer_id : beer.id;
-          var style = (beer.style.shortName) ? beer.style.shortName : beer.style;
+
+          var style = (beer.style) ? (beer.style.shortName) ?  beer.style.shortName : beer.style : '';
 
           var cardSelector = $(that.cards + '#' + id);
           that.addCard(that.card, id);
@@ -90,13 +91,14 @@
           else if (beer.icon)
             $(that.cards + '#' + id).find('.beer-icon img').attr('src', beer.icon);
 
-          var desc = beer.description || beer.style.description || '';
+          var desc = (beer.description) ? beer.description : (beer.style) ? beer.style.description : '';
           $(that.cards + '#' + id).find('.beer-desc').html(desc);
 
           that.updateMine(beer, id);
         });
 
         that.updateResults(beers.total);
+        that.endLoad();
       }
       else {
         $(this.cardsContainer).html('').append('No Results');
@@ -276,6 +278,12 @@
           $(this).remove();
         });
       });
+    },
+    startLoad: function () {
+      $('<div class="loading-wrapper"><img class="loading" src="' + $('.loading-icon').attr('src') + '" /></div>').insertBefore('#footer');
+    },
+    endLoad: function () {
+      $('body').find('.loading-wrapper').remove();
     }
   };
 

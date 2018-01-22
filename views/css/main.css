@@ -425,6 +425,27 @@ hr {
 	padding: 0;
 }
 
+#mobile_takeToTop_button
+{
+	display: none;
+	position:fixed;
+	bottom: 10px;
+	right: 3%;
+	border:1px solid black;
+	border-radius:99px;
+	background:black;
+	color:white;
+}
+@keyframes scroll
+{
+	from { bottom: 100%; }
+	to { bottom: 10px; }
+}
+
+.loading-wrapper {
+	text-align: center;
+}
+
 @media screen and (max-width: 700px) {
   .card {
     width: 95%;

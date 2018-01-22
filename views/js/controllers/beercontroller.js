@@ -4,17 +4,17 @@ function beerController (templates) {
   };
   var view = BeerView(templates);
 
-  $.fn.bindDelay = function( eventType, eventData, handler, timer ) {
-    if ( $.isFunction(eventData) ) {
+  $.fn.bindDelay = function (eventType, eventData, handler, timer) {
+    if ($.isFunction(eventData)) {
       timer = handler;
       handler = eventData;
     }
     timer = (typeof timer === "number") ? timer : 300;
     var timeouts;
-    $(this).bind(eventType, function(event) {
+    $(this).bind(eventType, function (event) {
       var that = this;
       clearTimeout(timeouts);
-      timeouts = setTimeout(function() {
+      timeouts = setTimeout(function () {
         handler.call(that, event);
       }, timer);
     });
@@ -25,23 +25,23 @@ function beerController (templates) {
     beers: [],
     view: view,
     updateModel: function (data) {
-      if(data.beer) {
-        for(var a = 0; a != this.models.Beers.data.allBeers.beers.length; a++) {
-          if(data.beer === this.models.Beers.data.allBeers.beers[a].id) {
-            if(!this.models.Beers.data.allBeers.beers[a]['date_submitted'])
+      if (data.beer) {
+        for (var a = 0; a != this.models.Beers.data.allBeers.beers.length; a++) {
+          if (data.beer === this.models.Beers.data.allBeers.beers[a].id) {
+            if (!this.models.Beers.data.allBeers.beers[a]['date_submitted'])
               this.models.Beers.data.allBeers.beers[a]['date_submitted'] = data.date_submitted;
             break;
           }
         }
         var edited = false;
-        for(var a = 0; a != this.models.Beers.data.myBeers.beers.length; a++) {
-          if(data.beer.beer_id === this.models.Beers.data.myBeers.beers[a].beer_id) {
+        for (var a = 0; a != this.models.Beers.data.myBeers.beers.length; a++) {
+          if (data.beer.beer_id === this.models.Beers.data.myBeers.beers[a].beer_id) {
             this.models.Beers.data.myBeers.beers[a] = data.beer;
             edited = true;
             break;
           }
         }
-        if(!edited) {
+        if (!edited) {
           this.models.Beers.data.myBeers.beers.push(data.beer);
           this.models.Beers.data.myBeers.total = this.models.Beers.data.myBeers.beers.length;
         }
@@ -62,26 +62,27 @@ function beerController (templates) {
       this.models.Beers.data.allBeers.resetBeers();
       this.models.Beers.data.selectedModel = this.models.Beers.models.beers;
       var that = this;
+      this.view.startLoad();
       this.models.Beers.find({action: 'beers', term: this.models.Beers.data.allBeers.term}, function (data) {
-        if(data) {
-          if(data.result) {
-            if(data.result === 'failure') {
+        if (data) {
+          if (data.result) {
+            if (data.result === 'failure') {
               that.view.addPopup(data.result, data.message);
             }
             else {
-              if(data.data) {
+              if (data.data) {
                 var json = JSON.parse(data.data);
-                if(json.data) {
+                if (json.data) {
                   that.models.Beers.data.allBeers.setBeers(json.totalResults, json.data, json.currentPage, json.numberOfPages);
                 }
               }
             }
           }
         }
-        if(that.models.Beers.data.allBeers.beers) {
-          that.models.Beers.data.allBeers.beers.forEach( function (beer, i, a) {
-            for(var b = 0; b !== that.models.Beers.data.myBeers.beers.length; b++) {
-              if(that.models.Beers.data.myBeers.beers[b].beer_id === beer.id) {
+        if (that.models.Beers.data.allBeers.beers) {
+          that.models.Beers.data.allBeers.beers.forEach(function (beer, i, a) {
+            for (var b = 0; b !== that.models.Beers.data.myBeers.beers.length; b++) {
+              if (that.models.Beers.data.myBeers.beers[b].beer_id === beer.id) {
                 if (that.models.Beers.data.myBeers.beers[b].rating) a[i].rating = that.models.Beers.data.myBeers.beers[b].rating;
                 if (that.models.Beers.data.myBeers.beers[b].impression) a[i].impression = that.models.Beers.data.myBeers.beers[b].impression;
                 if (that.models.Beers.data.myBeers.beers[b].tried) a[i].tried = that.models.Beers.data.myBeers.beers[b].tried;
@@ -99,9 +100,9 @@ function beerController (templates) {
     editBeer: function (selectedCard, callback) {
       var beer = this.view.getBeer(selectedCard);
 
-      if(beer) {
+      if (beer) {
         this.models.Beers.edit({action: 'edit', beer: beer}, function (data) {
-          if(callback)
+          if (callback)
             callback(data);
         });
       }
@@ -109,13 +110,13 @@ function beerController (templates) {
     rateBeer: function (selectedStar, selectedCard) {
       var star = this.view.getSelectedStar(selectedStar);
 
-      if(star) {
+      if (star) {
         this.view.alterRating(selectedStar, selectedCard, 'select');
 
         var card = $(selectedCard).closest(this.view.cards);
         var that = this;
         this.editBeer(card, function (data) {
-          if(data)
+          if (data)
             that.updateModel(data);
         });
       }
@@ -127,7 +128,7 @@ function beerController (templates) {
       that.view.toggleSelectedBeer(clickedCard);
 
       this.editBeer(clickedCard, function (data) {
-        if(data)
+        if (data)
           that.updateModel(data);
       });
     },
@@ -136,27 +137,27 @@ function beerController (templates) {
       var card = $(selectedCard).closest(this.view.cards);
 
       this.editBeer(card, function (data) {
-        if(data)
+        if (data)
           that.updateModel(data);
       });
     },
     filterBeers: function (filterBtn) {
-     this.view.toggleFilter(filterBtn);
-     this.filter();
+      this.view.toggleFilter(filterBtn);
+      this.filter();
     },
     filter: function () {
       var filteredBeers = [];
       var filters = this.view.getSelectedFilters();
       var model = this.models.Beers.data.selectedModel;
 
-      this.models.Beers.data[model].beers.forEach( function (beer) {
+      this.models.Beers.data[model].beers.forEach(function (beer) {
         var beer_id = (beer.beer_id) ? beer.beer_id : beer.id;
         var style = (beer.style && beer.style.name) ? beer.style.name : beer.style;
 
-        if(filters.includes('mine')) {
-          if(beer.date_submitted) {
-            if(filters.includes('stouts')) {
-              if(style.toLowerCase().indexOf('stout') !== -1) {
+        if (filters.includes('mine')) {
+          if (beer.date_submitted) {
+            if (filters.includes('stouts')) {
+              if (style.toLowerCase().indexOf('stout') !== -1) {
                 filteredBeers.push(beer_id);
               }
             }
@@ -166,8 +167,8 @@ function beerController (templates) {
           }
         }
         else {
-          if(filters.includes('stouts')) {
-            if(style.toLowerCase().indexOf('stout') !== -1) {
+          if (filters.includes('stouts')) {
+            if (style.toLowerCase().indexOf('stout') !== -1) {
               filteredBeers.push(beer_id);
             }
           }
@@ -191,13 +192,13 @@ function beerController (templates) {
       var model = this.models.Beers.data.selectedModel;
       var finalSort = (sortBy) ? sortBy : $('[data-sortable]').find('.sort-arrow').not(':empty').closest('[data-sortable]').attr('data-sortable');
 
-      if(this.models.Beers.data[model].beers) {
-        if(sortBy) {
+      if (this.models.Beers.data[model].beers) {
+        if (sortBy) {
           this.models.Beers.setSort(finalSort);
           this.view.sortButtons(finalSort, this.models.Beers.data.sort.state);
         }
 
-        if(finalSort)
+        if (finalSort)
           this.models.Beers.data[model].beers = this.keysort(this.models.Beers.data[model].beers, finalSort, this.models.Beers.data.sort.state);
 
         this.view.showBeers(this.models.Beers.data[model]);
@@ -210,32 +211,46 @@ function beerController (templates) {
       this.sortBeers('');
     },
     handleScroll: function (e) {
-      if(this.view.isScrollBottom()) {
-        if(this.models.Beers.data.allBeers.page < this.models.Beers.data.allBeers.pages) {
-          var page = this.models.Beers.data.allBeers.page + 1;
+      if (window.pageYOffset > 0 && this.models.Beers.data.selectedModel !== this.models.Beers.models.mine) {
+        var top = document.getElementById("mobile_takeToTop_button");
+        top.style.display = 'unset';
+        top.style.animationDuration = '1s';
+        top.style.animationName = 'scroll';
+      }
+      else {
+        var top = document.getElementById("mobile_takeToTop_button");
+        top.style.display = 'none';
+      }
+
+      if (this.view.isScrollBottom() && $('.loading-wrapper').length === 0) {
+        console.log(this.models.Beers.data.allBeers.page + ' - ' + this.models.Beers.data.allBeers.pages);
+        if (this.models.Beers.data.allBeers.page < this.models.Beers.data.allBeers.pages) {
+          this.models.Beers.data.allBeers.page++;
+          var page = this.models.Beers.data.allBeers.page;
           var term = this.models.Beers.data.allBeers.term;
           var that = this;
 
+          this.view.startLoad();
           this.models.Beers.find({action: 'beers', term: term, page: page}, function (data) {
-            if(data) {
-              if(data.result) {
-                if(data.result === 'failure') {
+            if (data) {
+              if (data.result) {
+                if (data.result === 'failure') {
                   that.view.addPopup(data.result, data.message);
                 }
                 else {
-                  if(data.data) {
+                  if (data.data) {
                     var json = JSON.parse(data.data);
-                    if(json.data) {
+                    if (json.data) {
                       that.models.Beers.data.allBeers.beers = that.models.Beers.data.allBeers.beers.concat(json.data);
                     }
                   }
                 }
               }
             }
-            if(that.models.Beers.data.allBeers.beers) {
-              that.models.Beers.data.allBeers.beers.forEach( function (beer, i, a) {
-                for(var b = 0; b !== that.models.Beers.data.myBeers.beers.length; b++) {
-                  if(that.models.Beers.data.myBeers.beers[b].beer_id === beer.id) {
+            if (that.models.Beers.data.allBeers.beers) {
+              that.models.Beers.data.allBeers.beers.forEach(function (beer, i, a) {
+                for (var b = 0; b !== that.models.Beers.data.myBeers.beers.length; b++) {
+                  if (that.models.Beers.data.myBeers.beers[b].beer_id === beer.id) {
                     if (that.models.Beers.data.myBeers.beers[b].rating) a[i].rating = that.models.Beers.data.myBeers.beers[b].rating;
                     if (that.models.Beers.data.myBeers.beers[b].impression) a[i].impression = that.models.Beers.data.myBeers.beers[b].impression;
                     if (that.models.Beers.data.myBeers.beers[b].tried) a[i].tried = that.models.Beers.data.myBeers.beers[b].tried;
@@ -245,7 +260,6 @@ function beerController (templates) {
                   }
                 }
               });
-              that.view.showBeers(that.models.Beers.data[that.models.Beers.data.selectedModel]);
               that.sortBeers('');
             }
           });
@@ -255,10 +269,10 @@ function beerController (templates) {
     keysort: function (arr, keyArr, reverse) {
       var keyArr = keyArr.split('.');
       var sortOrder = 1;
-      if(reverse)sortOrder = -1;
-      return arr.sort(function(a, b) {
-        var x=a,y=b;
-        for (var i=0; i < keyArr.length; i++) {
+      if (reverse) sortOrder = -1;
+      return arr.sort(function (a, b) {
+        var x = a, y = b;
+        for (var i = 0; i < keyArr.length; i++) {
           x = x[keyArr[i]];
           y = y[keyArr[i]];
         }

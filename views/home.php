@@ -5,6 +5,7 @@
 
         public function render() {
             $template = $this->getView($this::PATH);
+            $configs = include('config.php');
 
             $card = new Card();
             $templates = [
@@ -25,6 +26,7 @@
 	        $process = preg_replace( "/\{model\}/", file_get_contents($this::DIR . '/' . "js/models/model.js"), $process );
 	        $process = preg_replace( "/\{beercontroller\}/", file_get_contents($this::DIR . '/' . "js/controllers/beercontroller.js"), $process );
 	        $process = preg_replace( "/\{popup\}/", file_get_contents($this::DIR . '/' . "partials/popup.html"), $process );
+	        $process = preg_replace( "/\{{load-icon\}}/", $configs['loading-icon'], $process );
             $process = preg_replace( "/\r|\n/", "", $process );
 
             echo $process;

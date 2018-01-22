@@ -30,6 +30,9 @@
         </div>
 
         <div id="popup-wrapper"></div>
+        <img src="{{load-icon}}" style="display: none" class="loading-icon">
+
+        <a href="#"><div id="mobile_takeToTop_button">&#9651;</div></a>
         
         <script>
           {model}
@@ -51,6 +54,7 @@
                 e.stopPropagation();
                 e.stopImmediatePropagation();
 
+                $(BeerController.view.cardsContainer).html('');
                 BeerController.getBeers();
 
                 return false;
