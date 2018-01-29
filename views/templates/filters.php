@@ -13,10 +13,7 @@
 		<li>
 			<input id="check01" type="checkbox" name="menu"/>
 			<label for="check01">Filters</label>
-			<ul class="submenu">
-				<li class="filter"><a data-filter="stouts">Stouts</a></li>
-				<li class="filter"><a data-filter="mine">Mine</a></li>
-			</ul>
+			<ul class="submenu"></ul>
 		</li>
 	</ul>
 	<ul id="menu" class="filter-btn">

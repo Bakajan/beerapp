@@ -154,12 +154,16 @@ function beerController (templates) {
         var beer_id = (beer.beer_id) ? beer.beer_id : beer.id;
         var style = (beer.style && beer.style.name) ? beer.style.name : beer.style;
 
-        if (filters.includes('mine')) {
+        if (filters.includes('my beers')) {
+          console.log('here');
           if (beer.date_submitted) {
-            if (filters.includes('stouts')) {
-              if (style.toLowerCase().indexOf('stout') !== -1) {
-                filteredBeers.push(beer_id);
-              }
+            console.log(beer);
+            if(filters.length > 1) {
+              filters.forEach( function (filter) {
+                if (style.toLowerCase().indexOf(filter.slice(0, -1)) !== -1) {
+                  filteredBeers.push(beer_id);
+                }
+              });
             }
             else {
               filteredBeers.push(beer_id);
@@ -167,10 +171,12 @@ function beerController (templates) {
           }
         }
         else {
-          if (filters.includes('stouts')) {
-            if (style.toLowerCase().indexOf('stout') !== -1) {
-              filteredBeers.push(beer_id);
-            }
+          if(filters.length > 0) {
+            filters.forEach( function (filter) {
+              if (style.toLowerCase().indexOf(filter.slice(0, -1)) !== -1) {
+                filteredBeers.push(beer_id);
+              }
+            });
           }
           else {
             filteredBeers.push(beer_id);
@@ -211,7 +217,7 @@ function beerController (templates) {
       this.sortBeers('');
     },
     handleScroll: function (e) {
-      if (window.pageYOffset > 0 && this.models.Beers.data.selectedModel !== this.models.Beers.models.mine) {
+      if (window.pageYOffset > 0) {
         var top = document.getElementById("mobile_takeToTop_button");
         top.style.display = 'unset';
         top.style.animationDuration = '1s';
@@ -222,8 +228,7 @@ function beerController (templates) {
         top.style.display = 'none';
       }
 
-      if (this.view.isScrollBottom() && $('.loading-wrapper').length === 0) {
-        console.log(this.models.Beers.data.allBeers.page + ' - ' + this.models.Beers.data.allBeers.pages);
+      if (this.view.isScrollBottom() && $('.loading-wrapper').length === 0  && this.models.Beers.data.selectedModel !== this.models.Beers.models.mine) {
         if (this.models.Beers.data.allBeers.page < this.models.Beers.data.allBeers.pages) {
           this.models.Beers.data.allBeers.page++;
           var page = this.models.Beers.data.allBeers.page;

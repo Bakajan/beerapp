@@ -12,6 +12,19 @@
       solid: '&#9733;',
       empty: '&#9734;'
     },
+    filters: [
+      'My Beers',
+      'Stouts',
+      'Ales',
+      'Beers',
+      'Porters',
+      'Ciders',
+      'Lagers',
+      'IPAs',
+      'Pilsners',
+      'Bocks',
+      'Biers'
+    ],
     impression: '.beer-impression',
     triedMarker: '.select-asterisk',
     clearBtn: '.clear-btn',
@@ -284,6 +297,11 @@
     },
     endLoad: function () {
       $('body').find('.loading-wrapper').remove();
+    },
+    buildFilters: function () {
+      this.filters.forEach( function (filter) {
+        $('#check01').siblings('.submenu').append('<li class="filter"><a data-filter="' + filter.toLowerCase() + '">' + filter + '</a></li>');
+      });
     }
   };
 

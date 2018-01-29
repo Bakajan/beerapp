@@ -48,6 +48,8 @@
             $.holdReady(false);
           });
 
+          BeerController.view.buildFilters();
+
             $(document).ready(function() {
               $('#search-form').submit(function (e) {
                 e.preventDefault();
